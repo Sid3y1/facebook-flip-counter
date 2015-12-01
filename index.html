@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8"/>
+  <title>Facebook counter</title>
+  <meta name="description" content="An experiment in CSS animation for my flip counter script."/>
+  <meta name="keywords" content="HTML,CSS,JavaScript,counter,apple-style,flip,animate,digit,demo"/>
+  <meta name="author" content="Chris Nanney"/>
+
+  <!-- Counter script -->
+  <script type="text/javascript" src="js/flipcounter.js"></script>
+  <script type="text/javascript" src="js/modernizr.custom.21954.js"></script>
+  <!-- Counter styles -->
+  <link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+  <!-- NOT REQUIRED FOR COUNTER TO FUNCTION, JUST FOR DEMO PURPOSES -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/vader/jquery-ui.css"/>
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu:400,500,700">
+
+</head>
+
+<body style="background-color:#3b5998">
+<div class="clearfix">
+  <div class="counter-wrapper">
+    <ul class="flip-counter huge" id="facebook"></ul>
+  </div>
+</div>
+<script>
+var page = window.location.hash.substring(1);
+console.log(page);
+if(page.length==0){
+var page = window.prompt("URL of your facebook page?");
+window.location.hash = '#'+page;
+}
+
+var fb = new flipCounter('facebook', {value: 0, inc: 0, pace: 1000, auto: false});
+var old=0;
+function   update(){ 
+$.ajax({
+url : 'https://api.facebook.com/method/links.getStats?urls='+page+'&format=json',
+type : 'GET',
+dataType : 'json',
+success : function(data, statut){ // success est toujours en place, bien sûr !
+nbr=data[0].like_count;
+if(nbr != old){
+if(nbr > old){
+var audio = new Audio('win.mp3');
+}else{
+var audio = new Audio('excuses.mp3');
+}
+audio.play();
+fb.setValue(nbr);
+autoZoom();
+old=nbr;
+}
+
+}
+});
+}
+setInterval(update,1000);
+
+
+function autoZoom(){
+winWidth = $(window).width();
+winHeight = $(window).height();
+divWidth = parseInt(document.getElementById('facebook').offsetWidth)+30;
+divHeight = parseInt(document.getElementById('facebook').offsetHeight)+30;
+scale = Math.min(winWidth/divWidth,winHeight/divHeight);
+console.log(scale);
+document.getElementById("facebook").style.transform = "scale("+scale+")";
+document.getElementById("facebook").style.zoom = scale;
+document.body.style.verticalAlign = "middle";
+}
+
+</script>
+</body>
+</html>
