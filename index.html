@@ -24,7 +24,7 @@
 <body style="background-color:#3b5998">
 <div class="clearfix">
   <div class="counter-wrapper">
-    <ul class="flip-counter huge" id="facebook"></ul>
+    <ul class="flip-counter small" id="facebook"></ul>
   </div>
 </div>
 <script>
@@ -52,6 +52,8 @@ var audio = new Audio('excuses.mp3');
 }
 audio.play();
 fb.setValue(nbr);
+//Cheat for slow browser
+setTimeout("fb.setValue("+nbr+")",500);
 autoZoom();
 old=nbr;
 }
@@ -69,10 +71,12 @@ divWidth = parseInt(document.getElementById('facebook').offsetWidth)+30;
 divHeight = parseInt(document.getElementById('facebook').offsetHeight)+30;
 scale = Math.min(winWidth/divWidth,winHeight/divHeight);
 console.log(scale);
-document.getElementById("facebook").style.transform = "scale("+scale+")";
+//document.getElementById("facebook").style.transform = "scale("+scale+")";
+document.getElementById("facebook").style.zoom = scale;
 document.body.style.verticalAlign = "middle";
 }
 
+//autoZoom();
 </script>
 </body>
 </html>
