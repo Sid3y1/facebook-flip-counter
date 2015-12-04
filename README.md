@@ -21,7 +21,7 @@ just :
 apt-get update 
 apt-get install matchbox-window-manager unclutter midori
 ```
-and then copy exemple files :
+and then copy example files :
 ```bash
 cp example_kiosque/run.sh /home/pi/run.sh
 sudo cp example_kiosque/rc.local /etc/
