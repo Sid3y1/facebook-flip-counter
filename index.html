@@ -32,7 +32,11 @@ var page = window.location.hash.substring(1);
 console.log(page);
 if(page.length==0){
 var page = window.prompt("URL of your facebook page?");
+if(page==null){
+console.log("no url");
+}else{
 window.location.hash = '#'+page;
+}
 }
 
 var fb = new flipCounter('facebook', {value: 0, inc: 0, pace: 1000, auto: false});
