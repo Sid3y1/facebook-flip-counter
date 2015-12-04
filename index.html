@@ -31,53 +31,52 @@
 var page = window.location.hash.substring(1);
 console.log(page);
 if(page.length==0){
-var page = window.prompt("URL of your facebook page?");
-if(page==null){
-console.log("no url");
-}else{
-window.location.hash = '#'+page;
-}
+	var page = window.prompt("URL of your facebook page?");
+	if(page==null){
+		console.log("no url");
+	}else{
+		window.location.hash = '#'+page;
+	}
 }
 
 var fb = new flipCounter('facebook', {value: 0, inc: 0, pace: 1000, auto: false});
 var old=0;
 function   update(){ 
-$.ajax({
-url : 'https://api.facebook.com/method/links.getStats?urls='+page+'&format=json',
-type : 'GET',
-dataType : 'json',
-success : function(data, statut){ // success est toujours en place, bien sûr !
-nbr=data[0].like_count;
-if(nbr != old){
-if(nbr > old){
-var audio = new Audio('win.mp3');
-}else{
-var audio = new Audio('excuses.mp3');
-}
-audio.play();
-fb.setValue(nbr);
-//Cheat for slow browser
-setTimeout("fb.setValue("+nbr+")",500);
-autoZoom();
-old=nbr;
-}
-
-}
-});
+	$.ajax({
+		url : 'https://api.facebook.com/method/links.getStats?urls='+page+'&format=json',
+		type : 'GET',
+		dataType : 'json',
+		success : function(data, statut){ 
+			nbr=data[0].like_count;
+			if(nbr != old){
+				if(nbr > old){
+					var audio = new Audio('win.mp3');
+				}else{
+					var audio = new Audio('excuses.mp3');
+				}
+				audio.play();
+				fb.setValue(nbr);
+				//Cheat for slow browser
+				setTimeout("fb.setValue("+nbr+")",500);
+				autoZoom();
+				old=nbr;
+			}
+		}
+	});
 }
 setInterval(update,1000);
 
 
 function autoZoom(){
-winWidth = $(window).width();
-winHeight = $(window).height();
-divWidth = parseInt(document.getElementById('facebook').offsetWidth)+30;
-divHeight = parseInt(document.getElementById('facebook').offsetHeight)+30;
-scale = Math.min(winWidth/divWidth,winHeight/divHeight);
-console.log(scale);
-//document.getElementById("facebook").style.transform = "scale("+scale+")";
-document.getElementById("facebook").style.zoom = scale;
-document.body.style.verticalAlign = "middle";
+	winWidth = $(window).width();
+	winHeight = $(window).height();
+	divWidth = parseInt(document.getElementById('facebook').offsetWidth)+30;
+	divHeight = parseInt(document.getElementById('facebook').offsetHeight)+30;
+	scale = Math.min(winWidth/divWidth,winHeight/divHeight);
+	console.log(scale);
+	//document.getElementById("facebook").style.transform = "scale("+scale+")";
+	document.getElementById("facebook").style.zoom = scale;
+	document.body.style.verticalAlign = "middle";
 }
 
 //autoZoom();
